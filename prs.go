@@ -12,7 +12,10 @@ import (
 func openPR(ctx context.Context, rc requestContext) (string, error) {
 	commitMsgParts := strings.SplitN(rc.target.commit.message, "\n", 2)
 	var title string
-	if rc.target.branchConfig.PRs.UseUniqueBranchNames {
+	if rc.request.CommitMessage != "" {
+		// Use the custom commit message as the PR title if provided
+		title = fmt.Sprintf("%s <-- %s", rc.request.TargetBranch, rc.request.CommitMessage)
+	} else if rc.target.branchConfig.PRs.UseUniqueBranchNames {
 		// PR title is just the first line of the commit message
 		title = fmt.Sprintf("%s <-- %s", rc.request.TargetBranch, commitMsgParts[0])
 	} else {
