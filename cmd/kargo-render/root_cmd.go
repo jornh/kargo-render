@@ -209,6 +209,9 @@ func (o *rootOptions) run(ctx context.Context, out io.Writer) error {
 		logLevel = render.LogLevelDebug
 	}
 
+	// Ensure CommitMessage from flag is set in the request
+	o.Request.CommitMessage = o.commitMessage
+
 	svc := render.NewService(
 		&render.ServiceOptions{
 			LogLevel: logLevel,
